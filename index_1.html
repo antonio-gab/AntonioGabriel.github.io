@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Antonio Gabriel | Ciência da Computação · CEUB</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+  <style>
+    /* ── TOKENS ─────────────────────────────────────────── */
+    :root {
+      --bg:        #0a0a0f;
+      --surface:   #13131a;
+      --border:    #1f1f2e;
+      --accent:    #6c63ff;
+      --accent2:   #00d4aa;
+      --text:      #e8e8f0;
+      --muted:     #7a7a9a;
+      --font-display: 'Space Grotesk', sans-serif;
+      --font-mono:    'Space Mono', monospace;
+    }
+
+    /* ── RESET ──────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-display);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ────────────────────────────────────────────── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1.2rem 6vw;
+      background: rgba(10,10,15,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-family: var(--font-mono);
+      font-size: 1rem;
+      color: var(--accent);
+      letter-spacing: 0.08em;
+    }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      color: var(--muted); text-decoration: none;
+      font-size: 0.85rem; letter-spacing: 0.05em;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--text); }
+
+    /* ── HERO ───────────────────────────────────────────── */
+    #hero {
+      min-height: 100vh;
+      display: flex; align-items: center;
+      padding: 0 6vw;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-grid {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(var(--border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 60px 60px;
+      opacity: 0.4;
+    }
+    .hero-glow {
+      position: absolute;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(108,99,255,0.15) 0%, transparent 70%);
+      top: 50%; left: 50%; transform: translate(-50%,-50%);
+      pointer-events: none;
+    }
+    .hero-content { position: relative; max-width: 800px; }
+    .hero-tag {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--accent2);
+      letter-spacing: 0.15em;
+      margin-bottom: 1.5rem;
+      display: flex; align-items: center; gap: 0.75rem;
+    }
+    .hero-tag::before {
+      content: '';
+      display: block; width: 32px; height: 1px;
+      background: var(--accent2);
+    }
+    h1 {
+      font-size: clamp(2.8rem, 7vw, 5.5rem);
+      font-weight: 700;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      margin-bottom: 1.5rem;
+    }
+    h1 span { color: var(--accent); }
+    .hero-desc {
+      font-size: 1.1rem;
+      color: var(--muted);
+      max-width: 520px;
+      margin-bottom: 2.5rem;
+      line-height: 1.8;
+    }
+    .hero-cta { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .btn {
+      padding: 0.85rem 2rem;
+      border-radius: 6px;
+      font-family: var(--font-display);
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s;
+      display: inline-block;
+    }
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+    }
+    .btn-primary:hover { background: #5a52e0; transform: translateY(-2px); }
+    .btn-outline {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* ── SECTIONS ───────────────────────────────────────── */
+    section { padding: 7rem 6vw; }
+    .section-label {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--accent);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+    }
+    .section-title {
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 1rem;
+    }
+    .section-divider {
+      width: 48px; height: 3px;
+      background: var(--accent);
+      border-radius: 2px;
+      margin-bottom: 3rem;
+    }
+
+    /* ── SOBRE ──────────────────────────────────────────── */
+    #sobre { background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .sobre-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+    .sobre-text p { color: var(--muted); line-height: 1.9; margin-bottom: 1rem; font-size: 1rem; }
+    .sobre-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+    .stat-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.5rem;
+      transition: border-color 0.2s;
+    }
+    .stat-card:hover { border-color: var(--accent); }
+    .stat-number {
+      font-size: 2rem; font-weight: 700;
+      color: var(--accent); font-family: var(--font-mono);
+    }
+    .stat-label { font-size: 0.8rem; color: var(--muted); margin-top: 0.25rem; }
+
+    /* ── HABILIDADES ────────────────────────────────────── */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+    .skill-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.75rem;
+      transition: all 0.25s;
+    }
+    .skill-card:hover { border-color: var(--accent); transform: translateY(-4px); }
+    .skill-icon {
+      font-size: 1.75rem;
+      margin-bottom: 1rem;
+    }
+    .skill-name {
+      font-weight: 600; font-size: 1rem; margin-bottom: 0.5rem;
+    }
+    .skill-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.6; }
+    .skill-bar-wrap {
+      margin-top: 1rem;
+      background: var(--border);
+      border-radius: 99px;
+      height: 4px;
+      overflow: hidden;
+    }
+    .skill-bar {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      border-radius: 99px;
+      transition: width 1s ease;
+    }
+
+    /* ── PROJETOS ───────────────────────────────────────── */
+    #projetos { background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.75rem;
+    }
+    .project-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: all 0.25s;
+    }
+    .project-card:hover { border-color: var(--accent); transform: translateY(-5px); }
+    .project-header {
+      padding: 1.75rem 1.75rem 0;
+      display: flex; justify-content: space-between; align-items: flex-start;
+    }
+    .project-icon {
+      width: 48px; height: 48px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem;
+    }
+    .project-links { display: flex; gap: 0.5rem; }
+    .project-link {
+      width: 32px; height: 32px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: all 0.2s;
+    }
+    .project-link:hover { border-color: var(--accent); color: var(--accent); }
+    .project-body { padding: 1.25rem 1.75rem 1.75rem; }
+    .project-title { font-weight: 700; font-size: 1.1rem; margin-bottom: 0.5rem; }
+    .project-desc { font-size: 0.875rem; color: var(--muted); line-height: 1.7; margin-bottom: 1.25rem; }
+    .project-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .tag {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      padding: 0.25rem 0.65rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 99px;
+      color: var(--muted);
+    }
+
+    /* ── FORMAÇÃO ───────────────────────────────────────── */
+    .timeline { position: relative; padding-left: 2rem; }
+    .timeline::before {
+      content: '';
+      position: absolute; left: 0; top: 0; bottom: 0;
+      width: 1px; background: var(--border);
+    }
+    .timeline-item {
+      position: relative;
+      padding-bottom: 2.5rem;
+    }
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -2.35rem; top: 0.35rem;
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: var(--accent);
+      border: 2px solid var(--bg);
+      box-shadow: 0 0 0 3px rgba(108,99,255,0.3);
+    }
+    .timeline-period {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--accent2);
+      margin-bottom: 0.35rem;
+    }
+    .timeline-title { font-weight: 700; font-size: 1.05rem; margin-bottom: 0.25rem; }
+    .timeline-sub { font-size: 0.875rem; color: var(--muted); margin-bottom: 0.5rem; }
+    .timeline-desc { font-size: 0.875rem; color: var(--muted); line-height: 1.7; }
+
+    /* ── CONTATO ────────────────────────────────────────── */
+    #contato { background: var(--surface); border-top: 1px solid var(--border); }
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+    .contact-info p { color: var(--muted); line-height: 1.8; margin-bottom: 2rem; }
+    .contact-links { display: flex; flex-direction: column; gap: 1rem; }
+    .contact-link {
+      display: flex; align-items: center; gap: 1rem;
+      padding: 1rem 1.25rem;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: all 0.2s;
+    }
+    .contact-link:hover { border-color: var(--accent); color: var(--accent); }
+    .contact-link-icon { font-size: 1.1rem; }
+    .contact-form { display: flex; flex-direction: column; gap: 1rem; }
+    .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+    .form-group label { font-size: 0.8rem; color: var(--muted); font-family: var(--font-mono); }
+    .form-group input, .form-group textarea {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.75rem 1rem;
+      color: var(--text);
+      font-family: var(--font-display);
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .form-group input:focus, .form-group textarea:focus { border-color: var(--accent); }
+    .form-group textarea { min-height: 120px; resize: vertical; }
+
+    /* ── FOOTER ─────────────────────────────────────────── */
+    footer {
+      padding: 2rem 6vw;
+      border-top: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 1rem;
+    }
+    footer p { font-size: 0.8rem; color: var(--muted); font-family: var(--font-mono); }
+    .footer-accent { color: var(--accent); }
+
+    /* ── RESPONSIVE ─────────────────────────────────────── */
+    @media (max-width: 768px) {
+      .sobre-grid, .contact-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .nav-links { display: none; }
+    }
+
+    /* ── ANIMATIONS ─────────────────────────────────────── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .hero-content > * {
+      animation: fadeUp 0.7s ease both;
+    }
+    .hero-content > *:nth-child(1) { animation-delay: 0.1s; }
+    .hero-content > *:nth-child(2) { animation-delay: 0.2s; }
+    .hero-content > *:nth-child(3) { animation-delay: 0.3s; }
+    .hero-content > *:nth-child(4) { animation-delay: 0.4s; }
+    .hero-content > *:nth-child(5) { animation-delay: 0.5s; }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <span class="nav-logo">antonio-gab.dev</span>
+    <ul class="nav-links">
+      <li><a href="#sobre">Sobre</a></li>
+      <li><a href="#habilidades">Habilidades</a></li>
+      <li><a href="#projetos">Projetos</a></li>
+      <li><a href="#formacao">Formação</a></li>
+      <li><a href="#contato">Contato</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-grid"></div>
+    <div class="hero-glow"></div>
+    <div class="hero-content">
+      <p class="hero-tag">Disponível para estágio em tecnologia</p>
+      <h1>Olá, sou<br/><span>Antonio Gabriel.</span></h1>
+      <p class="hero-desc">
+        Estudante de Ciência da Computação no CEUB, Brasília.<br/>
+        Experiência em gestão financeira e auditoria. Objetivo de atuar
+        no mercado internacional com soluções tecnológicas de alto nível.
+      </p>
+      <div class="hero-cta">
+        <a href="#projetos" class="btn btn-primary">Ver Projetos</a>
+        <a href="#contato" class="btn btn-outline">Entre em Contato</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- SOBRE -->
+  <section id="sobre">
+    <p class="section-label">// 01 — Sobre mim</p>
+    <h2 class="section-title">Quem sou eu</h2>
+    <div class="section-divider"></div>
+    <div class="sobre-grid">
+      <div class="sobre-text">
+        <p>
+          Sou <strong>Antonio Gabriel Vieira Paiva</strong>, estudante de <strong>Ciência da Computação</strong>
+          no Centro Universitário de Brasília (CEUB), cursando o 1º semestre. Busco uma oportunidade
+          de estágio na área de tecnologia para desenvolver competências em programação e ampliar minha experiência prática.
+        </p>
+        <p>
+          Tenho experiência profissional em <strong>gestão financeira</strong> e <strong>auditoria</strong>,
+          atuando com controle de planilhas, organização de dados e suporte à tomada de decisões.
+          Esse histórico me deu uma visão analítica e atenção aos detalhes que hoje aplico também no desenvolvimento de software.
+        </p>
+        <p>
+          Meu objetivo profissional é atuar no <strong>mercado internacional</strong>, contribuindo com
+          soluções tecnológicas de alto nível. Tenho facilidade em aprender novas ferramentas,
+          boa comunicação e inglês em nível intermediário.
+        </p>
+      </div>
+      <div class="sobre-stats">
+        <div class="stat-card">
+          <div class="stat-number">2026</div>
+          <div class="stat-label">Início no CEUB</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">BSB</div>
+          <div class="stat-label">Brasília, DF</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">EN</div>
+          <div class="stat-label">Inglês Intermediário</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">2+</div>
+          <div class="stat-label">Anos de experiência profissional</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HABILIDADES -->
+  <section id="habilidades">
+    <p class="section-label">// 02 — Habilidades</p>
+    <h2 class="section-title">O que sei fazer</h2>
+    <div class="section-divider"></div>
+    <div class="skills-grid">
+
+      <div class="skill-card">
+        <div class="skill-icon">📊</div>
+        <div class="skill-name">Excel & Planilhas</div>
+        <div class="skill-desc">Criação e preenchimento de planilhas, organização de dados financeiros, controle de custos de materiais e mão de obra, análise de despesas.</div>
+        <div class="skill-bar-wrap"><div class="skill-bar" style="width:85%"></div></div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-icon">💻</div>
+        <div class="skill-name">Lógica de Programação</div>
+        <div class="skill-desc">Fundamentos sólidos em algoritmos, estruturas de controle e resolução de problemas com Portugol e C.</div>
+        <div class="skill-bar-wrap"><div class="skill-bar" style="width:70%"></div></div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-icon">🌐</div>
+        <div class="skill-name">Desenvolvimento Web</div>
+        <div class="skill-desc">Criação de páginas com HTML5 e CSS3, responsividade, boas práticas e publicação via GitHub Pages.</div>
+        <div class="skill-bar-wrap"><div class="skill-bar" style="width:65%"></div></div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-icon">🔧</div>
+        <div class="skill-name">Git & GitHub</div>
+        <div class="skill-desc">Controle de versão com Git, gerenciamento de repositórios e publicação de projetos via GitHub Pages.</div>
+        <div class="skill-bar-wrap"><div class="skill-bar" style="width:60%"></div></div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-icon">🗣️</div>
+        <div class="skill-name">Comunicação & Trabalho em Equipe</div>
+        <div class="skill-desc">Boa comunicação para transmitir ideias com clareza e colaborar de forma eficiente em equipe, desenvolvida em experiências profissionais reais.</div>
+        <div class="skill-bar-wrap"><div class="skill-bar" style="width:88%"></div></div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-icon">🤖</div>
+        <div class="skill-name">IA & Ferramentas Modernas</div>
+        <div class="skill-desc">Uso estratégico de inteligências artificiais (Gemini, Claude) como ferramentas de apoio à produtividade, aprendizado e desenvolvimento de projetos.</div>
+        <div class="skill-bar-wrap"><div class="skill-bar" style="width:75%"></div></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- PROJETOS -->
+  <section id="projetos">
+    <p class="section-label">// 03 — Projetos</p>
+    <h2 class="section-title">O que já construí</h2>
+    <div class="section-divider"></div>
+    <div class="projects-grid">
+
+      <div class="project-card">
+        <div class="project-header">
+          <div class="project-icon">🌱</div>
+          <div class="project-links">
+            <a href="https://agroos.lovable.app" class="project-link" title="Demo" target="_blank">↗</a>
+          </div>
+        </div>
+        <div class="project-body">
+          <div class="project-title">AgroOS</div>
+          <div class="project-desc">O sistema operacional completo para o produtor rural brasileiro. Gestão de fazendas, financeiro, atividades e produção em uma única plataforma SaaS.</div>
+          <div class="project-tags">
+            <span class="tag">SaaS</span>
+            <span class="tag">Agritech</span>
+            <span class="tag">Produto</span>
+            <span class="tag">Estratégia</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-header">
+          <div class="project-icon">🏗️</div>
+          <div class="project-links">
+            <a href="https://github.com/antonio-gab" class="project-link" title="GitHub" target="_blank">⌥</a>
+          </div>
+        </div>
+        <div class="project-body">
+          <div class="project-title">ObraGest Pro</div>
+          <div class="project-desc">Aplicação web de gerenciamento de obras com navegação multi-abas, rastreamento de progresso em tempo real, análise de custos e visualizador interativo de lotes.</div>
+          <div class="project-tags">
+            <span class="tag">HTML5</span>
+            <span class="tag">CSS3</span>
+            <span class="tag">JavaScript</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-header">
+          <div class="project-icon">🏨</div>
+          <div class="project-links">
+            <a href="https://github.com/antonio-gab" class="project-link" title="GitHub" target="_blank">⌥</a>
+          </div>
+        </div>
+        <div class="project-body">
+          <div class="project-title">Simulador de Hotel</div>
+          <div class="project-desc">Projeto acadêmico aplicando teoria dos conjuntos e predicados lógicos a cinco desafios práticos de gerenciamento hoteleiro, com diagramas de Venn e fluxogramas.</div>
+          <div class="project-tags">
+            <span class="tag">Lógica Matemática</span>
+            <span class="tag">Teoria dos Conjuntos</span>
+            <span class="tag">Pseudocódigo</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-header">
+          <div class="project-icon">🗂️</div>
+          <div class="project-links">
+            <a href="https://github.com/antonio-gab" class="project-link" title="GitHub" target="_blank">⌥</a>
+          </div>
+        </div>
+        <div class="project-body">
+          <div class="project-title">PortfolioHUB</div>
+          <div class="project-desc">Este portfólio pessoal, desenvolvido com HTML/CSS puro e implantado via GitHub Pages como parte do Bootcamp 1 do CEUB, documentando toda a jornada de implantação.</div>
+          <div class="project-tags">
+            <span class="tag">HTML5</span>
+            <span class="tag">CSS3</span>
+            <span class="tag">GitHub Pages</span>
+            <span class="tag">CEUB</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FORMAÇÃO -->
+  <section id="formacao">
+    <p class="section-label">// 04 — Formação</p>
+    <h2 class="section-title">Minha trajetória</h2>
+    <div class="section-divider"></div>
+    <div class="timeline">
+
+      <div class="timeline-item">
+        <div class="timeline-period">Fevereiro 2026 — Presente</div>
+        <div class="timeline-title">Bacharelado em Ciência da Computação</div>
+        <div class="timeline-sub">Centro Universitário de Brasília — CEUB · Brasília, DF</div>
+        <div class="timeline-desc">Cursando o 1º semestre. Disciplinas em andamento: Bootcamp 1 (Prof. Marcelo Carbone), Matemática para Computação (Prof. Luiz Claudio Diogo Reis) e Introdução à Computação (Prof. Max B. Godoy).</div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-period">Janeiro 2023 — Dezembro 2025</div>
+        <div class="timeline-title">Ensino Médio</div>
+        <div class="timeline-sub">Colégio Olimpo · Águas Claras, DF</div>
+        <div class="timeline-desc">Conclusão do ensino médio com base sólida em exatas, preparando a transição para a graduação em Computação.</div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-period">Janeiro 2014 — Dezembro 2022</div>
+        <div class="timeline-title">Ensino Fundamental</div>
+        <div class="timeline-sub">Colégio Leonardo da Vinci · Taguatinga, DF</div>
+        <div class="timeline-desc">Formação básica com destaque em raciocínio lógico e matemática.</div>
+      </div>
+
+    </div>
+
+    <!-- EXPERIÊNCIA PROFISSIONAL -->
+    <div style="margin-top: 4rem;">
+      <p class="section-label">// 04b — Experiência</p>
+      <h2 class="section-title">Experiência Profissional</h2>
+      <div class="section-divider"></div>
+      <div class="timeline">
+
+        <div class="timeline-item">
+          <div class="timeline-period">Recente</div>
+          <div class="timeline-title">Gestor Financeiro</div>
+          <div class="timeline-sub">Amoura Construtora · Brasília, DF</div>
+          <div class="timeline-desc">Controle e preenchimento de planilhas relacionadas a custos de materiais e mão de obra. Responsável pelo registro preciso de valores, organização de informações financeiras e auxílio na tomada de decisões por meio do acompanhamento de despesas.</div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-period">Anterior</div>
+          <div class="timeline-title">Estagiário — Auditoria</div>
+          <div class="timeline-sub">Asoor Pro · Brasília, DF</div>
+          <div class="timeline-desc">Experiência em auditoria na área médica, com preenchimento e organização de planilhas. Desenvolvimento de conhecimentos em Excel, aprimorando habilidades no controle e análise de dados.</div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTATO -->
+  <section id="contato">
+    <p class="section-label">// 05 — Contato</p>
+    <h2 class="section-title">Vamos conversar</h2>
+    <div class="section-divider"></div>
+    <div class="contact-grid">
+      <div class="contact-info">
+        <p>Estou aberto a oportunidades de estágio, projetos colaborativos e networking com profissionais da área de tecnologia. Se quiser trocar uma ideia, é só entrar em contato!</p>
+        <div class="contact-links">
+          <a href="https://github.com/antonio-gab" class="contact-link" target="_blank">
+            <span class="contact-link-icon">🐙</span>
+            github.com/antonio-gab
+          </a>
+          <a href="https://www.linkedin.com/in/antonio-paiva-55844a39a/" class="contact-link" target="_blank">
+            <span class="contact-link-icon">💼</span>
+            linkedin.com/in/antonio-paiva
+          </a>
+          <a href="mailto:antoniopaiva870@gmail.com" class="contact-link">
+            <span class="contact-link-icon">✉️</span>
+            antoniopaiva870@gmail.com
+          </a>
+        </div>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:1.5rem; justify-content:center;">
+        <p style="color:var(--muted); font-size:0.95rem; line-height:1.8;">
+          Prefiro uma conversa direta. Me encontre nas plataformas ao lado e vamos construir algo juntos.
+        </p>
+        <a href="https://github.com/antonio-gab" class="btn btn-primary" target="_blank" style="text-align:center;">
+          Ver meu GitHub →
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2026 <span class="footer-accent">Antonio Gabriel Vieira Paiva</span> · Ciência da Computação · CEUB</p>
+    <p>Feito com <span class="footer-accent">♥</span> em Brasília</p>
+  </footer>
+
+</body>
+</html>
